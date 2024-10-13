@@ -52,3 +52,6 @@ CATKIN_IGNORE
 
 # Project specific
 .idea/
+vrx/
+aquabot-env-sirehna/
+aquabot-example-sirehna/
