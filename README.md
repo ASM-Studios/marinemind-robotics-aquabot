@@ -15,12 +15,15 @@ This project sets up a development environment using Docker for ROS 2 Humble and
     cd marinemind-robotics-aquabot
     ```
 
-2. **Initialize submodules:**
-    ```sh
-    make init-submodules
-    ```
+[//]: # (2. **Initialize submodules:**)
 
-3. **Build and run the Docker containers:**
+[//]: # (    ```sh)
+
+[//]: # (    make init-submodules)
+
+[//]: # (    ```)
+
+2. **Build and run the Docker containers:**
     ```sh
     make build
     make run
@@ -28,9 +31,12 @@ This project sets up a development environment using Docker for ROS 2 Humble and
 
 ## Usage
 - ROS 2 Humble and Gazebo Garden are pre-installed and sourced.
-- Open Ubuntu Aquabot Webtop on `http://localhost:3000`.
+- Open Ubuntu Aquabot Webtop on [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Updating Submodules
-To update the submodules to the latest commit from the remote repository, run:
-```sh
-make update-submodules
+[//]: # (## Updating Submodules)
+
+[//]: # (To update the submodules to the latest commit from the remote repository, run:)
+
+[//]: # (```sh)
+
+[//]: # (make update-submodules)

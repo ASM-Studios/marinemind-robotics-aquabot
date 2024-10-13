@@ -6,12 +6,13 @@ ARG DEBIAN_FRONTEND="noninteractive"
 # title
 ENV TITLE="Ubuntu KDE"
 
-# prevent Ubuntu's firefox stub from being installed
+# Prevent Ubuntu's firefox stub from being installed
 COPY /root/etc/apt/preferences.d/firefox-no-snap /etc/apt/preferences.d/firefox-no-snap
 
 # Copy repository content
 COPY . /config/vrx_ws/src/
 
+# Install base requirements packages
 RUN \
   curl -o \
     /kclient/public/icon.png \
@@ -41,37 +42,54 @@ RUN \
     plasma-workspace \
     plymouth-theme-kubuntu-logo \
     qml-module-qt-labs-platform \
-    systemsettings && \
-  apt-get install -y locales && \
+    systemsettings \
+    locales \
+    software-properties-common \
+    curl && \
+  sed -i \
+    's/applications:org.kde.discover.desktop,/applications:org.kde.konsole.desktop,/g' \
+    /usr/share/plasma/plasmoids/org.kde.plasma.taskmanager/contents/config/main.xml
+
+# Set locale \
+RUN \
   locale-gen en_US en_US.UTF-8 && \
   update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8 && \
-  export LANG=en_US.UTF-8 && \
-  apt-get install -y software-properties-common && \
+  export LANG=en_US.UTF-8
+
+# Install ROS2 \
+RUN \
   add-apt-repository universe && \
   apt-get update && \
-  apt-get install -y curl && \
   curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg && \
   sh -c 'echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" > /etc/apt/sources.list.d/ros2.list' && \
   apt-get update && \
   apt-get upgrade -y && \
   apt-get install -y ros-humble-desktop ros-dev-tools && \
-  apt-get install -y lsb-release gnupg && \
+  apt-get install -y lsb-release gnupg
+
+# Install Gazebo \
+RUN \
   curl https://packages.osrfoundation.org/gazebo.gpg --output /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg && \
   sh -c 'echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" > /etc/apt/sources.list.d/gazebo-stable.list' && \
   apt-get update && \
-  apt-get install -y gz-garden && \
-  sed -i \
-    's/applications:org.kde.discover.desktop,/applications:org.kde.konsole.desktop,/g' \
-    /usr/share/plasma/plasmoids/org.kde.plasma.taskmanager/contents/config/main.xml && \
+  apt-get install -y gz-garden
+
+# Install VRX \
+RUN \
   apt-get install -y \
     python3-sdformat13 \
     ros-humble-ros-gzgarden \
     ros-humble-xacro \
     python3-colcon-common-extensions && \
   cd /config/vrx_ws/src && \
-  bash -c "source /opt/ros/humble/setup.bash && cd /config/vrx_ws && colcon build --merge-install" && \
   chown -R 1000:1000 /config/vrx_ws && \
   chmod -R 755 /config/vrx_ws && \
+  bash -c "source /opt/ros/humble/setup.bash && cd /config/vrx_ws && colcon build --merge-install && . install/setup.bash" && \
+  chown -R 1000:1000 /config/vrx_ws && \
+  chmod -R 755 /config/vrx_ws
+
+# cleanup \
+RUN \
   apt-get autoclean && \
   rm -rf \
     /config/.cache \
@@ -79,6 +97,11 @@ RUN \
     /var/lib/apt/lists/* \
     /var/tmp/* \
     /tmp/*
+
+# Set correct ownership and permissions for /config/.XDG
+RUN mkdir -p /config/.XDG && \
+    chown 1000:1000 /config/.XDG && \
+    chmod 0700 /config/.XDG
 
 # add local files
 COPY /root /
