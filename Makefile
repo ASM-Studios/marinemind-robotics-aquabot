@@ -1,7 +1,7 @@
 # Makefile
 
 # Variables
-DOCKER_COMPOSE = docker-compose
+DOCKER_COMPOSE := $(shell if command -v docker-compose > /dev/null 2>&1; then echo "docker-compose"; else echo "docker compose"; fi)
 SUBMODULES = vrx aquabot_sirhena aquabot_competitor
 
 # Rules
