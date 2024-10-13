@@ -1,0 +1,25 @@
+---
+services:
+  webtop:
+    container_name: ubuntu_aquabot_webtop
+    build:
+      context: .
+      dockerfile: Dockerfile
+    security_opt:
+      - seccomp:unconfined #optional
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - SUBFOLDER=/ #optional
+      - TITLE=Ubuntu Aquabot Webtop #optional
+    volumes:
+      - .:/config/vrx_ws/src/
+      - /var/run/docker.sock:/var/run/docker.sock #optional
+    ports:
+      - 3000:3000
+      - 3001:3001
+    #devices:
+    #  - /dev/dri:/dev/dri #optional
+    shm_size: "1gb" #optional
+    restart: unless-stopped

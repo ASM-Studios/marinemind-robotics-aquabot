@@ -1,0 +1,9 @@
+[submodule "vrx"]
+	path = vrx
+	url = https://github.com/osrf/vrx.git
+[submodule "aquabot-env-sirehna"]
+	path = aquabot-env-sirehna
+	url = git@github.com:sirehna/Aquabot.git
+[submodule "aquabot-example-sirehna"]
+	path = aquabot-example-sirehna
+	url = git@github.com:sirehna/Aquabot-Competitor.git
