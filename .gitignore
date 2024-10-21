@@ -1,3 +1,4 @@
+include-ros/*
 devel/
 logs/
 build/
@@ -51,6 +52,7 @@ qtcreator-*
 CATKIN_IGNORE
 
 # Project specific
+.vscode
 .idea/
 vrx/
 aquabot-env-sirehna/
