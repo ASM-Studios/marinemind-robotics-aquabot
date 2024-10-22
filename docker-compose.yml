@@ -16,6 +16,7 @@ services:
     volumes:
       - .:/config/vrx_ws/src/
       - /var/run/docker.sock:/var/run/docker.sock #optional
+      - ./include-ros:/opt/ros/humble/include
     ports:
       - 3000:3000
       - 3001:3001

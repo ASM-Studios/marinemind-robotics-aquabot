@@ -18,6 +18,7 @@ restart:
 
 build:
 	$(DOCKER_COMPOSE) up --build -d
+	sudo docker exec ubuntu_aquabot_webtop bash -c "cp -r opt/ros_save/humble/include/* /opt/ros/humble/include/"
 
 reset: stop build
 

@@ -110,6 +110,8 @@ COPY /root /
 EXPOSE 3000
 VOLUME /config
 
+RUN cp -r /opt/ros/ /opt/ros_save
+
 # source ROS2 setup script
 RUN echo "source /opt/ros/humble/setup.bash" >> /config/.bashrc
 RUN echo "source /config/vrx_ws/install/setup.bash" >> /config/.bashrc
