@@ -40,3 +40,12 @@ This project sets up a development environment using Docker for ROS 2 Humble and
 [//]: # (```sh)
 
 [//]: # (make update-submodules)
+
+## License
+
+This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
+
+## Documentation
+
+- [Project architecture](docs/architecture.md)
+- [ROS good practices](docs/good-practices.md)
