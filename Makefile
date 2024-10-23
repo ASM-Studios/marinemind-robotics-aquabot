@@ -18,15 +18,15 @@ restart:
 
 build:
 	$(DOCKER_COMPOSE) up --build -d
-	docker exec ubuntu_aquabot_webtop bash -c "cp -r opt/ros_save/humble/include/* /opt/ros/humble/include/"
+	docker exec ubuntu_aquabot_webtop bash -c "cp -r /opt/ros_save/humble/include/* /opt/ros/humble/include/"
 
-reset: stop build
+_down:
+	$(DOCKER_COMPOSE) down --rmi local
+
+reset: stop _down build
 
 term:
-	docker exec -it --user abc ubuntu_aquabot_webtop /bin/bash
-
-term-root:
-	docker exec -it ubuntu_aquabot_webtop /bin/bash
+	docker exec -it --user abc ubuntu_aquabot_webtop /bin/zsh
 
 update-submodules:
 	git submodule update --remote --merge

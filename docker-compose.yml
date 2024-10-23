@@ -11,8 +11,7 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Etc/UTC
-      - SUBFOLDER=/ #optional
-      - TITLE=Ubuntu Aquabot Webtop #optional
+      - TITLE=Ubuntu Aquabot Webtop
     volumes:
       - .:/config/vrx_ws/src/
       - /var/run/docker.sock:/var/run/docker.sock #optional
