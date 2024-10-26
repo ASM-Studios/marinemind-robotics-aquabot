@@ -1,6 +1,9 @@
 include-ros/*
 devel/
 logs/
+log/
+install/
+compile-flags.txt
 build/
 bin/
 lib/

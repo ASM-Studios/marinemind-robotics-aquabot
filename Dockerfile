@@ -73,8 +73,7 @@ RUN  apt-get install -y \
     ros-humble-ros-gzgarden \
     ros-humble-xacro \
     python3-colcon-common-extensions && \
-   mkdir -p /config/vrx_ws/src && \
-   bash -c "source /opt/ros/humble/setup.bash && cd /config/vrx_ws && colcon build --merge-install && . install/setup.bash"
+    mkdir -p /config/vrx_ws/src
 
 # Cleanup
 RUN  apt-get autoclean && \
@@ -107,12 +106,7 @@ RUN usermod -aG sudo abc && \
 # Set correct ownership and permissions for /config/.XDG
 RUN mkdir -p /config/.XDG && \
     chown 1000:1000 /config/.XDG && \
-    chmod 0700 /config/.XDG
-
-USER abc
-
-# Install oh-my-zsh
-RUN sudo sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended && \
-    sudo chsh -s $(which zsh) abc
+    chmod 0700 /config/.XDG && \
+    chsh -s $(which zsh) abc
 
 USER root
