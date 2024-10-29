@@ -25,13 +25,41 @@ This project sets up a development environment using Docker for ROS 2 Humble and
 
 2. **Build and run the Docker containers:**
     ```sh
-    make build
-    make run
+    make dc-build
     ```
 
-## Usage
-- ROS 2 Humble and Gazebo Garden are pre-installed and sourced.
-- Open Ubuntu Aquabot Webtop on [http://localhost:3000](http://localhost:3000) in your browser.
+3. **Open a new terminal and build ROS packages:**
+   ```sh
+   make term
+   ```
+- Ignore the `/config/.zshrc:source:3: no such file or directory: /config/vrx_ws/install/setup.zsh` error and run:
+   ```sh
+   make ros-build
+   ```
+- Exit the terminal.
+
+4. **Go to the Aquabot Webtop:**
+    - Open [http://localhost:3000](http://localhost:3000) in your browser.
+    - Open the terminal in the Webtop and run:
+        ```sh
+        make ros-run--easy-competition
+        ```
+
+## Development
+- Run `make ros-cs-fix` to fix coding standards issues.
+  - If you have a permission denied error, run `make set-perms` from your local host. 
+- Run `make ros-test` to run tests.
+- To avoid GUI consumption, use headless ros-run rules like `make ros-run--easy-headless-competition`.
+
+## ROS tools
+- Run `make ros-console` to open a GUI ROS console.
+- Run `make ros-rqt` to open a GUI RQT.
+
+## Troubleshooting
+If you got this error:  
+`Package 'usv_launch' not found: "package 'usv_launch' not found, searching: ['/opt/ros/humble']"`
+- Be sure that you have already run `make ros-build`.
+- Close the terminal and reopen it (sourcing is necessary).
 
 [//]: # (## Updating Submodules)
 

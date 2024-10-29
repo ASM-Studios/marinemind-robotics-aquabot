@@ -1,10 +1,6 @@
-name: Docker Build Test
+name: Docker Build and Test
 
 on:
-  push:
-    branches:
-      - main
-      - dev
   pull_request:
     branches:
       - main
@@ -16,22 +12,13 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Check for Dockerfile or docker-compose.yml changes
-        id: check_changes
-        run: |
-          if git diff --name-only HEAD^ HEAD | grep -E 'Dockerfile|docker-compose.yml'; then
-            echo "docker_changed=true" >> $GITHUB_ENV
-          else
-            echo "docker_changed=false" >> $GITHUB_ENV
-          fi
-
-      - name: Build Docker image without cache if Dockerfile or docker-compose.yml changed
-        if: env.docker_changed == 'true'
+      - name: Build Docker image
         run: |
           docker buildx build --no-cache --tag test-build --load .
 
-      - name: Validate pipeline if no changes in Dockerfile or docker-compose.yml
-        if: env.docker_changed == 'false'
-        run: echo "No changes in Dockerfile or docker-compose.yml. Pipeline validated."
+      - name: Run tests on Docker image
+        run: |
+          # Add your test commands here
+          echo "Running tests..."
