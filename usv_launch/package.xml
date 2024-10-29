@@ -5,7 +5,7 @@
   <version>0.0.1</version>
   <description>Launch files for bringing up the full system</description>
   <maintainer email="maintainer@marinemindrobotics.com">root</maintainer>
-  <license>Licensed under GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007</license>
+  <license>GPL-3.0-only</license>
 
   <depend>launch</depend>
   <depend>launch_ros</depend>
