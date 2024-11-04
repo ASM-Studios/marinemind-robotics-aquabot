@@ -69,6 +69,10 @@ if(BUILD_TESTING)
   ament_add_gtest(test_camera_control_service test/test_camera_control_service.cpp)
   ament_target_dependencies(test_camera_control_service rclcpp std_msgs)
   target_link_libraries(test_camera_control_service "${cpp_typesupport_target}")
+
+  ament_add_gtest(test_machinery_service test/test_machinery_service.cpp)
+  ament_target_dependencies(test_machinery_service rclcpp std_msgs)
+  target_link_libraries(test_machinery_service "${cpp_typesupport_target}")
 endif()
 
 ament_package()
