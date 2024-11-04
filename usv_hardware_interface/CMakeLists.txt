@@ -20,6 +20,7 @@ include_directories(include/usv_hardware_interface)
 # Generate service files
 rosidl_generate_interfaces(${PROJECT_NAME}
   "srv/SetCameraAngle.srv"
+  "srv/GetMachineryState.srv"
 )
 ament_export_dependencies(rosidl_default_runtime)
 
@@ -30,23 +31,33 @@ ament_target_dependencies(sensor_interface_node rclcpp sensor_msgs geometry_msgs
 add_executable(camera_control_server_node src/camera_control_server.cpp)
 ament_target_dependencies(camera_control_server_node rclcpp std_srvs std_msgs)
 
+add_executable(machinery_node src/machinery_node.cpp)
+ament_target_dependencies(machinery_node rclcpp std_srvs std_msgs)
+
+add_executable(keyboard_control_node src/keyboard_control_node.cpp)
+ament_target_dependencies(keyboard_control_node rclcpp std_srvs std_msgs)
+
 # Link libraries
 rosidl_get_typesupport_target(cpp_typesupport_target
   ${PROJECT_NAME} rosidl_typesupport_cpp)
 
 target_link_libraries(camera_control_server_node "${cpp_typesupport_target}")
+target_link_libraries(machinery_node "${cpp_typesupport_target}")
+target_link_libraries(keyboard_control_node "${cpp_typesupport_target}")
 
 # Install targets
 install(TARGETS
   sensor_interface_node
   camera_control_server_node
+  machinery_node
+  keyboard_control_node
   DESTINATION lib/${PROJECT_NAME}
 )
 
 # Install launch files
 install(DIRECTORY
-        launch
-        DESTINATION share/${PROJECT_NAME}
+  launch
+  DESTINATION share/${PROJECT_NAME}
 )
 
 # Testing
@@ -58,6 +69,10 @@ if(BUILD_TESTING)
   ament_add_gtest(test_camera_control_service test/test_camera_control_service.cpp)
   ament_target_dependencies(test_camera_control_service rclcpp std_msgs)
   target_link_libraries(test_camera_control_service "${cpp_typesupport_target}")
+
+  ament_add_gtest(test_machinery_service test/test_machinery_service.cpp)
+  ament_target_dependencies(test_machinery_service rclcpp std_msgs)
+  target_link_libraries(test_machinery_service "${cpp_typesupport_target}")
 endif()
 
 ament_package()

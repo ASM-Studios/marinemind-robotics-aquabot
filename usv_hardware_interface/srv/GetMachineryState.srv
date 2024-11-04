@@ -1,0 +1,5 @@
+---
+float64 left_thrust
+float64 right_thrust
+float64 left_position
+float64 right_position
