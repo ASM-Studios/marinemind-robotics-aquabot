@@ -3,9 +3,9 @@
 <package format="3">
   <name>usv_perception</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
-  <maintainer email="abc@todo.todo">abc</maintainer>
-  <license>TODO: License declaration</license>
+  <description>Package in charge of processing data coming from camera and sensors</description>
+  <maintainer email="amaintainer@marinemindrobotics.com"></maintainer>
+  <license>GPL-3.0-only</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 

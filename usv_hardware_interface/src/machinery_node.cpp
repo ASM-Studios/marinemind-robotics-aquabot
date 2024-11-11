@@ -119,7 +119,7 @@ void MachineryNode::publishState()
 void MachineryNode::init_service()
 {
   _get_machinery_state_service = this->create_service<usv_hardware_interface::srv::GetMachineryState>(
-    "get_machinery_state",
+    "/usv/hardware_interface/get_machinery_state",
     std::bind(
       &MachineryNode::get_machinery_state_callback, this, std::placeholders::_1,
       std::placeholders::_2));
