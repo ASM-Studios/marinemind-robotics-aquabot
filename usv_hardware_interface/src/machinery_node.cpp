@@ -37,10 +37,10 @@ MachineryNode::MachineryNode()
     this->create_publisher<std_msgs::msg::Float64>("/aquabot/thrusters/right/thrust", 10);
 
   _m_thrust_sub = this->create_subscription<std_msgs::msg::String>(
-    "machinery_thurst_topic", 10,
+    "/usv/thrusters/machinery", 10,
     std::bind(&MachineryNode::_thrustInstructionCallback, this, std::placeholders::_1));
   _m_position_sub = this->create_subscription<std_msgs::msg::String>(
-    "machinery_position_topic", 10,
+    "/usv/thrusters/pos", 10,
     std::bind(&MachineryNode::_positionInstructionCallback, this, std::placeholders::_1));
 
   _m_timer = this->create_wall_timer(
@@ -119,7 +119,7 @@ void MachineryNode::publishState()
 void MachineryNode::init_service()
 {
   _get_machinery_state_service = this->create_service<usv_hardware_interface::srv::GetMachineryState>(
-    "get_machinery_state",
+    "/usv/hardware_interface/get_machinery_state",
     std::bind(
       &MachineryNode::get_machinery_state_callback, this, std::placeholders::_1,
       std::placeholders::_2));
