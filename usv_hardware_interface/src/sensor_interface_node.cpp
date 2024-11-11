@@ -74,56 +74,32 @@ SensorInterfaceNode::SensorInterfaceNode()
 
 void SensorInterfaceNode::image_callback(const sensor_msgs::msg::Image::SharedPtr msg)
 {
-  RCLCPP_INFO(
-    this->get_logger(), "Received an image: width=%d, height=%d", msg->width,
-    msg->height);
+  image_publisher_->publish(*msg);
 }
 
 void SensorInterfaceNode::camera_info_callback(const sensor_msgs::msg::CameraInfo::SharedPtr msg)
 {
-  RCLCPP_INFO(
-    this->get_logger(), "Received camera info: width=%d, height=%d", msg->width, msg->height);
+  camera_info_publisher_->publish(*msg);
 }
 
 void SensorInterfaceNode::gps_callback(const sensor_msgs::msg::NavSatFix::SharedPtr msg)
 {
-  RCLCPP_INFO(
-    this->get_logger(),
-    "GPS Fix: Latitude=%f, Longitude=%f, Altitude=%f",
-    msg->latitude,
-    msg->longitude,
-    msg->altitude
-  );
   gps_publisher_->publish(*msg);
 }
 
 void SensorInterfaceNode::imu_callback(const sensor_msgs::msg::Imu::SharedPtr msg)
 {
-  RCLCPP_INFO(
-    this->get_logger(), "IMU Data: Orientation x=%f, y=%f, z=%f, w=%f",
-    msg->orientation.x, msg->orientation.y, msg->orientation.z, msg->orientation.w);
   imu_publisher_->publish(*msg);
 }
 
 void SensorInterfaceNode::windturbine_callback(const geometry_msgs::msg::PoseArray::SharedPtr msg)
 {
-  RCLCPP_INFO(this->get_logger(), "Received %zu wind turbine positions.", msg->poses.size());
+  windturbine_publisher_->publish(*msg);
 }
 
 void SensorInterfaceNode::acoustics_callback(const std_msgs::msg::Float64MultiArray::SharedPtr msg)
 {
-  if (msg->data.size() == 3) {
-    double range = msg->data[0];
-    double bearing = msg->data[1];
-    double elevation = msg->data[2];
-    RCLCPP_INFO(
-      this->get_logger(),
-      "Acoustics Data: Range=%f, Bearing=%f, Elevation=%f",
-      range, bearing, elevation
-    );
-  } else {
-    RCLCPP_WARN(this->get_logger(), "Received acoustics data with incorrect size.");
-  }
+  acoustics_publisher_->publish(*msg);
 }
 
 int main(int argc, char * argv[])

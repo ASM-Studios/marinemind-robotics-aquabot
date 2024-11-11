@@ -4,7 +4,7 @@
 DOCKER_COMPOSE := $(shell command -v docker-compose > /dev/null 2>&1 && echo "docker-compose" || echo "docker compose")
 SUBMODULES = vrx aquabot_sirhena aquabot_competitor
 DEV_PACKAGES = usv_hardware_interface
-SKIP_PACKAGES = package_example aquabot_example opencv_example
+SKIP_PACKAGES = package_example aquabot_example opencv_example usv_perception
 NO_TESTS_PACKAGES = $(SKIP_PACKAGES) vrx_gazebo vrx_ros aquabot_python wamv_description aquabot_description wamv_gazebo vrx_ros vrx_gz aquabot_gz
 BASE_DIR := /config/vrx_ws
 USER := abc

@@ -21,12 +21,26 @@
 #define USV_PERCEPTION__OBSTACLE_DETECTOR_NODE_HPP_
 
 #include "rclcpp/rclcpp.hpp"
+#include "sensor_msgs/msg/image.hpp"
+#include "cv_bridge/cv_bridge.h"
+#include "opencv2/opencv.hpp"
 
 class ObstacleDetectorNode : public rclcpp::Node {
     public:
         ObstacleDetectorNode();
 
+        void getImageFromCamera();
+
     private:
+        void image_callback(const sensor_msgs::Image::SharedPtr msg);
+        void orientation_callback(const sensor_msgs::Imu::SharedPtr msg);
+        void camera_info_callback(const sensor_msgs::msg::CameraInfo::SharedPtr msg);
+
+        rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr image_subscription_;
+        rclcpp::Subscription<sensor_msgs::msg::Imu::SharedPtr> orientation_subscription_;
+        rclcpp::Subscription<sensor_msgs::msg::CameraInfo::SharedPtr>  camera_info_subscription_;
+
+
 };
 
 #endif
