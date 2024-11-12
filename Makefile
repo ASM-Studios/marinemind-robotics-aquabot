@@ -61,7 +61,7 @@ is-in-local:
 
 # ROS rules
 ros-build: is-in-dc ## Build the ROS packages
-	cd $(BASE_DIR); colcon build --merge-install --packages-skip $(SKIP_PACKAGES)
+	cd $(BASE_DIR); colcon build --merge-install --packages-skip $(SKIP_PACKAGES) --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 
 ros-clean: is-in-dc ## Clean the ROS packages
 	rm -rf $(BASE_DIR)/build $(BASE_DIR)/install $(BASE_DIR)/log

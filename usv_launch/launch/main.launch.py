@@ -75,7 +75,20 @@ def generate_launch_description():
         }.items()
     )
 
+    usv_guidance_and_control_launch_file = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(get_package_share_directory('usv_guidance_and_control'),
+                         'launch/guidance_and_control.launch.py')
+        ),
+        launch_arguments={
+            'world': world_name,
+            'headless': headless,
+            'competition_mode': competition_mode
+        }.items()
+    )
+
     ld.add_action(aquabot_competition_launch_file)
     ld.add_action(usv_hardware_interface_launch_file)
+    ld.add_action(usv_guidance_and_control_launch_file)
 
     return ld

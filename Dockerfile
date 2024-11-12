@@ -65,7 +65,9 @@ RUN  add-apt-repository universe && \
     ros-dev-tools \
     lsb-release \
     gnupg \
-    gz-garden
+    gz-garden \
+    ros-humble-navigation2 \
+    ros-humble-nav2-bringup
 
 # Install VRX
 RUN  apt-get install -y \
