@@ -3,14 +3,14 @@
 # Variables
 DOCKER_COMPOSE := $(shell command -v docker-compose > /dev/null 2>&1 && echo "docker-compose" || echo "docker compose")
 SUBMODULES = vrx aquabot_sirhena aquabot_competitor
-DEV_PACKAGES = usv_hardware_interface
+DEV_PACKAGES = usv_hardware_interface usv_guidance_and_control
 SKIP_PACKAGES = package_example aquabot_example opencv_example
 NO_TESTS_PACKAGES = $(SKIP_PACKAGES) vrx_gazebo vrx_ros aquabot_python wamv_description aquabot_description wamv_gazebo vrx_ros vrx_gz aquabot_gz
 BASE_DIR := /config/vrx_ws
 USER := abc
 
 # Rules
-.PHONY: term set-perms apply-license cs-fix dc-run dc-stop dc-restart dc-build dc-rmi dc-reset ros-build ros-clean ros-run--easy-headless-competition ros-run--easy-competition ros-rqt ros-console ros-test update-submodules pull-submodules init-submodules help
+.PHONY: term set-perms apply-license ros-cs-fix dc-run dc-stop dc-restart dc-build dc-rmi dc-reset ros-build ros-clean ros-run--easy-headless-competition ros-run--easy-competition ros-rqt ros-console ros-test update-submodules pull-submodules init-submodules help
 
 # Local rules
 term: is-in-local ## Open a terminal in the container
@@ -22,12 +22,13 @@ set-perms: is-in-local ## Setup rights for the project
 apply-license: is-in-local ## Check and apply the license
 	@sudo python3 apply_license.py
 
-cs-fix: is-in-local apply-license ## Fix the coding style
+# Docker rules
+
+ros-cs-fix: is-in-dc apply-license ## Fix the coding style
 	@for package in $(DEV_PACKAGES); do \
 		sudo uncrustify -c uncrustify.cfg --replace --no-backup $$(find $$package -name "*.cpp" -o -name "*.hpp"); \
 	done
 
-# Docker rules
 dc-run: is-in-local ## Run the docker containers
 	$(DOCKER_COMPOSE) up -d
 
@@ -105,12 +106,12 @@ help: ## Show this help message
 	@echo "Usage: make [target]"
 	@echo ""
 	@echo "Local rules: to run only on host"
-	@echo "  term                          Open a terminal in the container"
-	@echo "  set-perms                     Setup rights for the project"
-	@echo "  apply-license                 Check and apply the license"
-	@echo "  cs-fix                        Fix the coding style"
+	@echo "  term                                Open a terminal in the container"
+	@echo "  set-perms                           Setup rights for the project"
+	@echo "  apply-license                       Check and apply the license"
 	@echo ""
 	@echo "Docker rules:"
+	@echo "  ros-cs-fix                          Fix the coding style"
 	@echo "  dc-run                              Run the docker containers"
 	@echo "  dc-stop                             Stop the docker containers"
 	@echo "  dc-restart                          Restart the docker containers"

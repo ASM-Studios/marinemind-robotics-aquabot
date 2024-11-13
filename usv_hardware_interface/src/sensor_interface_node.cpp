@@ -61,9 +61,9 @@ SensorInterfaceNode::SensorInterfaceNode()
   camera_info_publisher_ = this->create_publisher<sensor_msgs::msg::CameraInfo>(
     "/usv/hardware_interface/camera_info", 10);
   gps_publisher_ = this->create_publisher<sensor_msgs::msg::NavSatFix>(
-    "/usv/hardware_interface/gps/fix", 10);
+    "/usv/hardware_interface/gps_fix", 10);
   imu_publisher_ = this->create_publisher<sensor_msgs::msg::Imu>(
-    "/usv/hardware_interface/imu/data",
+    "/usv/hardware_interface/imu_data",
     10);
   windturbine_publisher_ = this->create_publisher<geometry_msgs::msg::PoseArray>(
     "/windturbines_positions", 10);
@@ -102,6 +102,15 @@ void SensorInterfaceNode::imu_callback(const sensor_msgs::msg::Imu::SharedPtr ms
   RCLCPP_INFO(
     this->get_logger(), "IMU Data: Orientation x=%f, y=%f, z=%f, w=%f",
     msg->orientation.x, msg->orientation.y, msg->orientation.z, msg->orientation.w);
+
+  RCLCPP_INFO(
+    this->get_logger(), "Angular Velocity x=%f, y=%f, z=%f",
+    msg->angular_velocity.x, msg->angular_velocity.y, msg->angular_velocity.z);
+
+  RCLCPP_INFO(
+    this->get_logger(), "Linear Acceleration x=%f, y=%f, z=%f",
+    msg->linear_acceleration.x, msg->linear_acceleration.y, msg->linear_acceleration.z);
+
   imu_publisher_->publish(*msg);
 }
 

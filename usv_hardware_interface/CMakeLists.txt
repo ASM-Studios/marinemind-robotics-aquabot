@@ -10,6 +10,7 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
+find_package(sensor_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(std_srvs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
@@ -37,6 +38,9 @@ ament_target_dependencies(machinery_node rclcpp std_srvs std_msgs)
 add_executable(keyboard_control_node src/keyboard_control_node.cpp)
 ament_target_dependencies(keyboard_control_node rclcpp std_srvs std_msgs)
 
+add_executable(velocity_control_node src/velocity_control_node.cpp)
+ament_target_dependencies(velocity_control_node rclcpp std_msgs sensor_msgs)
+
 # Link libraries
 rosidl_get_typesupport_target(cpp_typesupport_target
   ${PROJECT_NAME} rosidl_typesupport_cpp)
@@ -51,6 +55,7 @@ install(TARGETS
   camera_control_server_node
   machinery_node
   keyboard_control_node
+  velocity_control_node
   DESTINATION lib/${PROJECT_NAME}
 )
 

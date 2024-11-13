@@ -29,7 +29,6 @@
 
 #include <rclcpp/rclcpp.hpp>
 #include "std_msgs/msg/float64.hpp"
-#include "std_msgs/msg/string.hpp"
 #include "usv_hardware_interface/srv/get_machinery_state.hpp"
 
 namespace usv_hardware_interface
@@ -55,8 +54,8 @@ class MachineryNode : public rclcpp::Node
 {
   rclcpp::TimerBase::SharedPtr _m_timer;
 
-  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr _m_thrust_sub;
-  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr _m_position_sub;
+  rclcpp::Subscription<std_msgs::msg::Float64>::SharedPtr _m_thrust_sub;
+  rclcpp::Subscription<std_msgs::msg::Float64>::SharedPtr _m_position_sub;
 
   rclcpp::Publisher<std_msgs::msg::Float64>::SharedPtr _left_pos_pub_;
   rclcpp::Publisher<std_msgs::msg::Float64>::SharedPtr _left_thrust_pub_;
@@ -68,8 +67,8 @@ class MachineryNode : public rclcpp::Node
 
   MachineryState _state;
 
-  void _thrustInstructionCallback(const std_msgs::msg::String::SharedPtr msg);
-  void _positionInstructionCallback(const std_msgs::msg::String::SharedPtr msg);
+  void _thrustInstructionCallback(const std_msgs::msg::Float64::SharedPtr msg);
+  void _positionInstructionCallback(const std_msgs::msg::Float64::SharedPtr msg);
 
   void _publishThrust();
   void _publishPosition();

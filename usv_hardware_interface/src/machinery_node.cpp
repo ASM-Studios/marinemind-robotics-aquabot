@@ -36,10 +36,10 @@ MachineryNode::MachineryNode()
   _right_thrust_pub_ =
     this->create_publisher<std_msgs::msg::Float64>("/aquabot/thrusters/right/thrust", 10);
 
-  _m_thrust_sub = this->create_subscription<std_msgs::msg::String>(
+  _m_thrust_sub = this->create_subscription<std_msgs::msg::Float64>(
     "/usv/thrusters/machinery", 10,
     std::bind(&MachineryNode::_thrustInstructionCallback, this, std::placeholders::_1));
-  _m_position_sub = this->create_subscription<std_msgs::msg::String>(
+  _m_position_sub = this->create_subscription<std_msgs::msg::Float64>(
     "/usv/thrusters/pos", 10,
     std::bind(&MachineryNode::_positionInstructionCallback, this, std::placeholders::_1));
 
@@ -50,42 +50,20 @@ MachineryNode::MachineryNode()
   init_service();
 }
 
-void MachineryNode::_thrustInstructionCallback(const std_msgs::msg::String::SharedPtr msg)
+void MachineryNode::_thrustInstructionCallback(const std_msgs::msg::Float64::SharedPtr msg)
 {
-  MachineryTopic topic;
-  std::istringstream iss(msg->data);
-  iss >> topic.side >> topic.value;
-  topic.value = std::clamp(topic.value, -MAX_THRUST, MAX_THRUST);
-
-  if (topic.side == "left") {
-    _state.left_thrust = topic.value;
-  }
-  if (topic.side == "right") {
-    _state.right_thrust = topic.value;
-  }
-  if (topic.side == "both") {
-    _state.left_thrust = topic.value;
-    _state.right_thrust = topic.value;
-  }
+    double value = msg->data;
+    value = std::clamp(value, -MAX_THRUST, MAX_THRUST);
+    _state.left_thrust = value;
+    _state.right_thrust = value;
 }
 
-void MachineryNode::_positionInstructionCallback(const std_msgs::msg::String::SharedPtr msg)
+void MachineryNode::_positionInstructionCallback(const std_msgs::msg::Float64::SharedPtr msg)
 {
-  MachineryTopic topic;
-  std::istringstream iss(msg->data);
-  iss >> topic.side >> topic.value;
-  topic.value = std::clamp(topic.value, -MAX_POSITION, MAX_POSITION);
-
-  if (topic.side == "left") {
-    _state.left_position = topic.value;
-  }
-  if (topic.side == "right") {
-    _state.right_position = topic.value;
-  }
-  if (topic.side == "both") {
-    _state.left_position = topic.value;
-    _state.right_position = topic.value;
-  }
+    double value = msg->data;
+    value = std::clamp(value, -MAX_POSITION, MAX_POSITION);
+    _state.left_position = value;
+    _state.right_position = value;
 }
 
 void MachineryNode::_publishThrust()

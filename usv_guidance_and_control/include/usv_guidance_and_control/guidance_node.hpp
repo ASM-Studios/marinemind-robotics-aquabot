@@ -21,6 +21,7 @@
 
 #include <queue>
 #include <tuple>
+#include <cmath>
 
 #include <rclcpp/rclcpp.hpp>
 #include "std_msgs/msg/float64.hpp"
@@ -30,11 +31,23 @@
 #include "sensor_msgs/msg/nav_sat_fix.hpp"
 #include "sensor_msgs/msg/imu.hpp"
 
+struct Quaternion {
+  double roll;   // x
+  double pitch;  // y
+  double yaw;    // z
+  double scalar; // w
+};
+
+struct Vector3D {
+    double x;
+    double y;
+    double z;
+};
+
 struct ImuData {
-  std_msgs::msg::Float64 roll;   // x
-  std_msgs::msg::Float64 pitch;  // y
-  std_msgs::msg::Float64 yaw;    // z
-  std_msgs::msg::Float64 scalar; // w
+    Quaternion orientation;
+    Vector3D angular_velocity;
+    Vector3D linear_acceleration;
 };
 
 class GuidanceNode: public rclcpp::Node {
@@ -47,13 +60,18 @@ class GuidanceNode: public rclcpp::Node {
         rclcpp::Publisher<std_msgs::msg::Float64>::SharedPtr _pub_cmd_vel;
         rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr _pub_goal_reached;
 
-        std::queue<std::pair<std_msgs::msg::Float64, std_msgs::msg::Float64>> _waypoints;
-        std::pair<std_msgs::msg::Float64, std_msgs::msg::Float64> _gps_position;
+        std::queue<std::pair<double, double>> _waypoints;
+        std::pair<double, double> _current_waypoint;
+        std::pair<double, double> _gps_position;
         ImuData _imu_data;
 
         void _imuCallback(const sensor_msgs::msg::Imu::SharedPtr msg);
         void _gpsCallback(const sensor_msgs::msg::NavSatFix::SharedPtr msg);
         void _waypointsCallback(const nav_msgs::msg::Path::SharedPtr msg);
+
+        bool _checkWaypointReached();
+        void _handleGuidance();
+
     public:
         GuidanceNode();
         ~GuidanceNode();
