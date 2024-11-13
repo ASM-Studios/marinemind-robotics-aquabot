@@ -40,7 +40,15 @@ def generate_launch_description():
         }]
     )
 
+    guidance_node = Node(
+        package='usv_guidance_and_control',
+        executable='guidance',
+        name='guidance_node',
+        output='screen'
+    )
+
     ld.add_action(path_planner_node)
     ld.add_action(slam_toolbox_node)
+    ld.add_action(guidance_node)
 
     return ld

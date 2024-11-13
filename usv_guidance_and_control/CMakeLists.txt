@@ -17,6 +17,8 @@ find_package(rosidl_default_generators REQUIRED)
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
 
+include_directories(include/usv_guidance_and_control)
+
 rosidl_generate_interfaces(${PROJECT_NAME}
     "srv/PathPlanner.srv"
 )
@@ -31,6 +33,16 @@ target_link_libraries(path_planner "${cpp_typesupport_target}")
 
 install(TARGETS
   path_planner
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+add_executable(guidance_node src/guidance_node.cpp)
+ament_target_dependencies(guidance_node rclcpp std_msgs)
+
+target_link_libraries(guidance_node "${cpp_typesupport_target}")
+
+install(TARGETS
+  guidance_node
   DESTINATION lib/${PROJECT_NAME}
 )
 
