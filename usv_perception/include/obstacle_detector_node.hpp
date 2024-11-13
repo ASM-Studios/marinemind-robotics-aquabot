@@ -31,14 +31,14 @@ class ObstacleDetectorNode : public rclcpp::Node {
 
         void getImageFromCamera();
 
-    private:
-        void image_callback(const sensor_msgs::Image::SharedPtr msg);
-        void orientation_callback(const sensor_msgs::Imu::SharedPtr msg);
-        void camera_info_callback(const sensor_msgs::msg::CameraInfo::SharedPtr msg);
+    // private:
+    //     void image_callback(const sensor_msgs::Image::SharedPtr msg);
+    //     void orientation_callback(const sensor_msgs::Imu::SharedPtr msg);
+    //     void camera_info_callback(const sensor_msgs::msg::CameraInfo::SharedPtr msg);
 
-        rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr image_subscription_;
-        rclcpp::Subscription<sensor_msgs::msg::Imu::SharedPtr> orientation_subscription_;
-        rclcpp::Subscription<sensor_msgs::msg::CameraInfo::SharedPtr>  camera_info_subscription_;
+    //     rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr image_subscription_;
+    //     rclcpp::Subscription<sensor_msgs::msg::Imu::SharedPtr> orientation_subscription_;
+    //     rclcpp::Subscription<sensor_msgs::msg::CameraInfo::SharedPtr>  camera_info_subscription_;
 
 
 };

@@ -21,14 +21,14 @@
 
 ObstacleDetectorNode::ObstacleDetectorNode() : Node("obstacle_detector_node")
 {
-    RCLCPP_INFO(this->get_logger(), "Obstacle Detector Node started.");
+    // RCLCPP_INFO(this->get_logger(), "Obstacle Detector Node started.");
 
-    image_subscription_ = this->create_subscription<sensor_msgs::msg::Image>(
-        "/usv/hardware_interface/image_raw",
-        10,
-        std::bind(&ObstacleDetectorNode::image_callback,
-        this,
-        std::placeholders::_1));
+    // image_subscription_ = this->create_subscription<sensor_msgs::msg::Image>(
+    //     "/usv/hardware_interface/image_raw",
+    //     10,
+    //     std::bind(&ObstacleDetectorNode::image_callback,
+    //     this,
+    //     std::placeholders::_1));
 }
 
 void ObstacleDetectorNode::getImageFromCamera() {
