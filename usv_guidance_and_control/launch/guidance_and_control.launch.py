@@ -36,7 +36,11 @@ def generate_launch_description():
         output='screen',
         parameters=[{
             'use_sim_time': True,
+            'mode': 'mapping',
             'resolution': 0.05,
+            'publish_map': True,
+            'base_frame': 'map',
+            'odom_frame': 'odom'
         }]
     )
 

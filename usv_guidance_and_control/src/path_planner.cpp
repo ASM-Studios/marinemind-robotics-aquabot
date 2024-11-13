@@ -1,21 +1,39 @@
 #include "../include/usv_guidance_and_control/path_planner.hpp"
-#include "sensor_msgs/msg/detail/nav_sat_fix__struct.hpp"
+#include <sensor_msgs/msg/detail/nav_sat_fix__struct.hpp>
+
+void PathPlanner::_publish_map() {
+  this->_map_publisher->publish(this->_map);
+}
 
 void PathPlanner::_find_path(const usv_guidance_and_control::srv::PathPlanner::Request::SharedPtr request,
   usv_guidance_and_control::srv::PathPlanner::Response::SharedPtr response) {
-
+  RCLCPP_INFO(this->get_logger(), "Path Planner Service called.");
+  auto x = request->point.x;
+  auto y = request->point.y;
+  RCLCPP_INFO(this->get_logger(), "Received x: %lf, y: %lf", x, y);
+  response->tmp = 1;
 }
 
-void PathPlanner::_obstacle_detected_callback(const std_msgs::msg::Float64 msg) {
-
+void PathPlanner::_obstacle_detected_callback(const geometry_msgs::msg::Point msg) {
+  RCLCPP_INFO(this->get_logger(), "Obstacle detected at x: %f, y: %f, z: %f", msg.x, msg.y, msg.z);
+  this->_map.info.width = 1000;
+  this->_map.info.height = 1000;
+  this->_map.info.resolution = 0.1;
+  this->_map.data.resize(this->_map.info.width * this->_map.info.height);
+  for (int i = 0; i < this->_map.info.width * this->_map.info.height; i++) {
+    this->_map.data[i] = 0;
+  }
 }
 
-PathPlanner::PathPlanner() : Node("guide_module") {
+PathPlanner::PathPlanner() : Node("guide_module"), _map(nav_msgs::msg::OccupancyGrid()) {
   RCLCPP_INFO(this->get_logger(), "Path Planner Node started.");
   this->_service = this->create_service<usv_guidance_and_control::srv::PathPlanner>(
     "/usv/guidance_and_control/path_planner", std::bind(&PathPlanner::_find_path, this, std::placeholders::_1, std::placeholders::_2));
 
-  this->_obstacle_detected = this->create_subscription<std_msgs::msg::Float64>(
+  this->_map_publisher = this->create_publisher<nav_msgs::msg::OccupancyGrid>("/map", 10);
+  this->_map_timer = this->create_wall_timer(std::chrono::seconds(1), std::bind(&PathPlanner::_publish_map, this));
+
+  this->_obstacle_detected = this->create_subscription<geometry_msgs::msg::Point>(
     "/usv/perception/obstacle_detected", 10, std::bind(&PathPlanner::_obstacle_detected_callback, this, std::placeholders::_1));
 }
 
