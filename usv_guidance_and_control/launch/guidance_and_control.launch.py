@@ -15,7 +15,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
+import os
 from launch import LaunchDescription
+from launch.substitutions import LaunchConfiguration,ThisLaunchFileDir
 from launch_ros.actions import Node
 
 def generate_launch_description():
@@ -28,23 +30,26 @@ def generate_launch_description():
         name='path_planner_node',
         output='screen'
     )
-    
-    slam_toolbox_node = Node(
-        package='slam_toolbox',
-        executable='sync_slam_toolbox_node',
-        name='slam_toolbox',
-        output='screen',
-        parameters=[{
-            'use_sim_time': True,
-            'mode': 'mapping',
-            'resolution': 0.05,
-            'publish_map': True,
-            'base_frame': 'map',
-            'odom_frame': 'odom'
-        }]
-    )
-
     ld.add_action(path_planner_node)
-    ld.add_action(slam_toolbox_node)
+
+    costmap_params_file = LaunchConfiguration('costmap_params_file', default=os.path.join('/config/vrx_ws/src/usv_guidance_and_control', 'config', 'costmap_params.yaml'))
+
+    """costmap_2d_node = Node(
+        package='nav2_costmap_2d',
+        executable='nav2_costmap_2d',
+        name='costmap_2d_node',
+        output='screen',
+        parameters=[costmap_params_file],
+        remappings=[('/costmap', '/static_costmap')]
+    )
+    ld.add_action(costmap_2d_node)
+
+    nav2_bringup_node = Node(
+        package='nav2_bringup',
+        executable='nav2_bringup',
+        name='nav2_bringup_node',
+        output='screen',
+    )
+    ld.add_action(nav2_bringup_node)"""
 
     return ld

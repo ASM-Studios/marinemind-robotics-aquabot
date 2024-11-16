@@ -1,7 +1,7 @@
 // Copyright 2024 MarineMindRobotics
 
-#ifndef USV_GUIDANCE_AND_CONTROL__GUIDE_MODULE_HPP_
-#define USV_GUIDANCE_AND_CONTROL__GUIDE_MODULE_HPP_
+#ifndef USV_GUIDANCE_AND_CONTROL__PATH_PLANNER_HPP_
+#define USV_GUIDANCE_AND_CONTROL__PATH_PLANNER_HPP_
 
 #include <vector>
 #include <rclcpp/rclcpp.hpp>
@@ -28,6 +28,8 @@ class PathPlanner : public rclcpp::Node {
     //rclcpp::Subscription<int>::SharedPtr _gps;
     
     rclcpp::Service<usv_guidance_and_control::srv::PathPlanner>::SharedPtr _service;
+
+    void _clean_coords(geometry_msgs::msg::Point &point);
 
     rclcpp::TimerBase::SharedPtr _map_timer;
     rclcpp::Publisher<nav_msgs::msg::OccupancyGrid>::SharedPtr _map_publisher;

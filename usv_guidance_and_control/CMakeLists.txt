@@ -8,18 +8,22 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(rclcpp_action REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(std_srvs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
+
+find_package(actionlib REQUIRED)
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
     "srv/PathPlanner.srv"
+    "action/MoveToWaypoint.action"
     DEPENDENCIES geometry_msgs
 )
 ament_export_dependencies(rosidl_default_runtime)
@@ -27,9 +31,14 @@ ament_export_dependencies(rosidl_default_runtime)
 add_executable(path_planner src/path_planner.cpp)
 ament_target_dependencies(path_planner rclcpp sensor_msgs geometry_msgs nav_msgs std_msgs std_srvs)
 
+add_executable(guidance src/guidance.cpp)
+ament_target_dependencies(guidance rclcpp rclcpp_action sensor_msgs geometry_msgs nav_msgs std_msgs std_srvs)
+
 rosidl_get_typesupport_target(cpp_typesupport_target
   ${PROJECT_NAME} rosidl_typesupport_cpp)
+
 target_link_libraries(path_planner "${cpp_typesupport_target}")
+target_link_libraries(guidance "${cpp_typesupport_target}")
 
 install(TARGETS
   path_planner

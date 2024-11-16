@@ -93,8 +93,6 @@ COPY /root /
 EXPOSE 3000
 VOLUME /config
 
-RUN  cp -r /opt/ros/ /opt/ros_save
-
 # Set dev user environment
 RUN echo "cd /config/vrx_ws/src" >> /config/.zshrc
 RUN echo "source /opt/ros/humble/setup.zsh" >> /config/.zshrc
